@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mishkath Research Institute – Publications</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Crimson+Pro:wght@300;400;500;600&display=swap');
+
+  :root {
+    --green-deep: #1d4a3f;
+    --green-mid: #2d6b5c;
+    --green-light: #4a9b86;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #faf7f2;
+    --dark: #1a1a1a;
+    --text-body: #3d3228;
+    --border: rgba(201,168,76,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--cream);
+    color: var(--text-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── LOADING SCREEN ── */
+  #loadingScreen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--green-deep);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 20px;
+    transition: opacity 0.6s ease;
+  }
+  #loadingScreen.fade-out { opacity: 0; pointer-events: none; }
+  .loader-logo { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2.5rem; font-weight: 800; }
+  .loader-sub { color: rgba(255,255,255,0.6); font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase; }
+  .loader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+  .loader-fill { height: 100%; background: var(--gold); border-radius: 2px; animation: loadFill 1.2s ease forwards; }
+  @keyframes loadFill { from { width: 0; } to { width: 100%; } }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(145deg, var(--green-deep) 0%, #0f2d26 60%, #162e26 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(201,168,76,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(74,155,134,0.1) 0%, transparent 50%);
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 30px);
+  }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px;
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+    position: relative; z-index: 10;
+  }
+  .logo-wrap { display: flex; align-items: center; gap: 14px; }
+  .logo-icon {
+    width: 48px; height: 48px; background: var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: var(--green-deep);
+    font-family: 'Playfair Display', serif;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.25);
+    flex-shrink: 0;
+  }
+  .logo-text { color: white; }
+  .logo-text strong { display: block; font-family: 'Playfair Display', serif; font-size: 16px; letter-spacing: 0.3px; }
+  .logo-text span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); opacity: 0.85; }
+  .cart-btn {
+    background: var(--gold); color: var(--green-deep);
+    border: none; cursor: pointer; padding: 9px 20px; border-radius: 30px;
+    font-family: 'Crimson Pro', serif; font-size: 15px; font-weight: 600;
+    display: flex; align-items: center; gap: 7px;
+    transition: transform 0.2s, box-shadow 0.2s; flex-shrink: 0;
+  }
+  .cart-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+  .cart-count {
+    background: var(--green-deep); color: var(--gold);
+    border-radius: 50%; width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+
+  .hero-body { text-align: center; padding: 56px 48px 64px; position: relative; z-index: 5; }
+  .hero-eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.8rem); color: white; line-height: 1.15; margin-bottom: 10px; }
+  .hero-subtitle { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); color: var(--gold-light); letter-spacing: 2px; margin-bottom: 30px; font-style: italic; }
+  .hero-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 32px; }
+  .hero-desc { color: rgba(255,255,255,0.65); font-size: 1.05rem; max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+  /* ── OFFERS ── */
+  .offers-section { padding: 28px 48px; background: linear-gradient(135deg, #163d33, #1f5444); }
+  .offers-label {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .offers-label::before, .offers-label::after { content:''; flex:1; height:1px; background: rgba(201,168,76,0.3); }
+  .banners-row { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 6px; }
+  .banners-row::-webkit-scrollbar { height: 4px; }
+  .banners-row::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+  .offer-banner {
+    flex: 0 0 300px; border-radius: 12px; padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px;
+    position: relative; overflow: hidden; cursor: pointer; transition: transform 0.2s;
+    min-height: 85px;
+  }
+  .offer-banner:hover { transform: translateY(-3px); }
+  .offer-banner.b1 { background: linear-gradient(135deg, #b8860b, #daa520); }
+  .offer-banner.b2 { background: linear-gradient(135deg, #1a5c4e, #2d8b74); border:1px solid rgba(201,168,76,0.3); }
+  .offer-banner.b3 { background: linear-gradient(135deg, #4a1942, #7b2d6e); }
+  .offer-banner .bi { font-size: 30px; flex-shrink: 0; }
+  .offer-banner strong { display:block; font-family:'Playfair Display',serif; font-size:15px; color:white; margin-bottom:3px; }
+  .offer-banner span { font-size:12.5px; color:rgba(255,255,255,0.82); line-height:1.4; }
+  .nb { position:absolute; top:9px; right:9px; background:#ff4444; color:white; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:20px; }
+
+  /* ── LANG TABS ── */
+  .lang-section { padding: 52px 48px 24px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:1.7rem; color:var(--green-deep); margin-bottom:6px; }
+  .section-sub { font-size:0.95rem; color:#7a6e60; margin-bottom:28px; }
+  .lang-tabs { display:flex; gap:16px; flex-wrap:wrap; }
+  .lang-tab {
+    cursor:pointer; border:2px solid var(--border); border-radius:16px;
+    padding:20px 28px; background:white; transition:all 0.3s;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    min-width:160px; flex:1;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position:relative; overflow:hidden;
+  }
+  .lang-tab::before { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold); transform:scaleX(0); transition:transform 0.3s; }
+  .lang-tab:hover, .lang-tab.active { border-color:var(--green-mid); box-shadow:0 6px 30px rgba(29,74,63,0.15); transform:translateY(-3px); }
+  .lang-tab:hover::before, .lang-tab.active::before { transform:scaleX(1); }
+  .lang-tab.active { background:var(--green-deep); }
+  .lang-tab-icon { font-size:32px; }
+  .lang-tab-name { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--green-deep); transition:color 0.3s; }
+  .lang-tab.active .lang-tab-name { color:var(--gold); }
+  .lang-tab-count { font-size:11px; color:#999; background:var(--cream); border-radius:20px; padding:3px 10px; transition:all 0.3s; }
+  .lang-tab.active .lang-tab-count { background:rgba(201,168,76,0.2); color:var(--gold-light); }
+
+  /* ── BOOKS GRID ── */
+  .books-section { padding: 16px 48px 64px; }
+  .books-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:10px; }
+  .books-title { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--green-deep); }
+  .filter-note { font-size:13px; color:#9a8e82; background:white; padding:6px 14px; border-radius:20px; border:1px solid var(--border); }
+
+  .books-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:28px; transition:opacity 0.3s; }
+
+  .book-card {
+    background:white; border-radius:20px; overflow:hidden;
+    box-shadow:0 2px 16px rgba(0,0,0,0.07);
+    transition:opacity 0.5s ease, transform 0.5s ease, box-shadow 0.35s, border-color 0.35s;
+    border:1px solid rgba(0,0,0,0.05);
+    display:flex; flex-direction:column;
+    opacity:0; transform:translateY(22px);
+  }
+  .book-card.visible { opacity:1; transform:translateY(0); }
+  .book-card:hover { transform:translateY(-10px) !important; box-shadow:0 24px 60px rgba(29,74,63,0.2); border-color:rgba(201,168,76,0.35); }
+
+  /* ── COVER IMAGE ── */
+  .book-cover {
+    position:relative; overflow:hidden; height:250px;
+    background:linear-gradient(160deg, var(--green-deep), #0e2921);
+    cursor:pointer;
+  }
+  .book-cover img {
+    width:100%; height:100%; object-fit:cover; object-position:center 28%;
+    transition:transform 0.5s ease; display:block;
+  }
+  .book-card:hover .book-cover img { transform:scale(1.07); }
+  .book-cover::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, transparent 55%, rgba(10,25,20,0.65) 100%);
+    pointer-events:none;
+  }
+  .cover-zoom-hint {
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    background:rgba(255,255,255,0.15); backdrop-filter:blur(6px);
+    color:white; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+    padding:5px 12px; border-radius:20px; opacity:0;
+    transition:opacity 0.3s; pointer-events:none; z-index:3; white-space:nowrap;
+  }
+  .book-card:hover .cover-zoom-hint { opacity:1; }
+
+  .badge-new {
+    position:absolute; top:12px; right:12px; z-index:5;
+    background:linear-gradient(135deg, #ff4444, #cc0000);
+    color:white; font-size:9px; font-weight:700; letter-spacing:1.5px;
+    text-transform:uppercase; padding:5px 11px; border-radius:20px;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,68,68,0.4)} 50%{box-shadow:0 0 0 6px rgba(255,68,68,0)} }
+  .badge-lang {
+    position:absolute; top:12px; left:12px; z-index:5;
+    background:rgba(201,168,76,0.92); color:var(--green-deep);
+    font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    padding:5px 11px; border-radius:20px;
+  }
+  .price-badge {
+    position:absolute; bottom:10px; right:12px; z-index:5;
+    background:var(--green-deep); color:var(--gold);
+    font-family:'Playfair Display',serif; font-size:1rem; font-weight:700;
+    padding:5px 13px; border-radius:20px; border:1px solid rgba(201,168,76,0.3);
+  }
+
+  .book-body { padding:18px 20px 8px; flex:1; }
+  .book-id { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; font-weight:600; }
+  .book-name { font-family:'Playfair Display',serif; font-size:1rem; color:var(--dark); line-height:1.45; margin-bottom:10px; }
+  .book-contents { font-size:12px; color:#7a6e60; line-height:1.65; border-top:1px solid rgba(0,0,0,0.06); padding-top:10px; }
+  .book-contents ul { list-style:none; padding:0; }
+  .book-contents li { padding:2px 0 2px 14px; position:relative; }
+  .book-contents li::before { content:'›'; position:absolute; left:0; color:var(--gold); font-weight:700; }
+
+  .book-footer { padding:12px 20px 18px; }
+  .add-btn {
+    background:var(--green-deep); color:white; border:none; cursor:pointer;
+    padding:11px 20px; border-radius:30px; width:100%;
+    font-family:'Crimson Pro',serif; font-size:14px; font-weight:600;
+    transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:7px;
+  }
+  .add-btn:hover { background:var(--green-mid); transform:scale(1.02); }
+  .add-btn.added { background:linear-gradient(135deg, var(--gold), #b8860b); color:var(--green-deep); }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position:fixed; inset:0; z-index:500;
+    background:rgba(0,0,0,0.9);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity 0.3s;
+  }
+  .lightbox.open { opacity:1; pointer-events:all; }
+  .lightbox-img-wrap { position:relative; }
+  .lightbox img { max-width:90vw; max-height:85vh; border-radius:10px; box-shadow:0 30px 80px rgba(0,0,0,0.8); transform:scale(0.92); transition:transform 0.35s; display:block; }
+  .lightbox.open img { transform:scale(1); }
+  .lightbox-close { position:absolute; top:-14px; right:-14px; width:36px; height:36px; background:white; border:none; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.4); }
+  .lightbox-caption { position:absolute; bottom:-36px; left:0; right:0; text-align:center; color:rgba(255,255,255,0.75); font-family:'Playfair Display',serif; font-size:1rem; }
+
+  /* ── CART SIDEBAR ── */
+  .cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:200; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .cart-overlay.open { opacity:1; pointer-events:all; }
+  .cart-sidebar {
+    position:fixed; right:0; top:0; bottom:0; width:420px; background:white;
+    z-index:201; transform:translateX(100%);
+    transition:transform 0.4s cubic-bezier(0.23,1,0.32,1);
+    display:flex; flex-direction:column;
+    box-shadow:-10px 0 60px rgba(0,0,0,0.2);
+  }
+  .cart-sidebar.open { transform:translateX(0); }
+  .cart-head { background:var(--green-deep); padding:22px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .cart-head h3 { font-family:'Playfair Display',serif; color:white; font-size:1.2rem; }
+  .cart-head small { color:var(--gold); font-size:0.85rem; display:block; }
+  .close-cart { background:none; border:none; color:white; cursor:pointer; font-size:24px; line-height:1; transition:transform 0.2s; }
+  .close-cart:hover { transform:rotate(90deg); }
+  .cart-items { flex:1; overflow-y:auto; padding:16px; }
+  .cart-empty { text-align:center; padding:60px 20px; color:#bbb; }
+  .cart-empty .ei { font-size:52px; margin-bottom:14px; }
+  .cart-item { display:flex; gap:14px; padding:14px; border-radius:12px; background:var(--cream); margin-bottom:12px; position:relative; }
+  .ci-cover { width:56px; height:72px; border-radius:8px; overflow:hidden; flex-shrink:0; background:var(--green-deep); }
+  .ci-cover img { width:100%; height:100%; object-fit:cover; object-position:center 20%; }
+  .ci-info { flex:1; }
+  .ci-id { font-size:10px; color:var(--gold); letter-spacing:1px; font-weight:600; }
+  .ci-name { font-family:'Playfair Display',serif; font-size:0.88rem; color:var(--dark); margin:3px 0 8px; line-height:1.3; }
+  .ci-controls { display:flex; align-items:center; gap:10px; }
+  .qty-btn { width:26px; height:26px; border-radius:50%; border:1.5px solid var(--green-mid); background:white; color:var(--green-deep); cursor:pointer; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+  .qty-btn:hover { background:var(--green-deep); color:white; }
+  .qty-n { font-weight:600; font-size:14px; min-width:20px; text-align:center; }
+  .ci-price { font-family:'Playfair Display',serif; font-size:0.9rem; font-weight:700; color:var(--green-deep); }
+  .rm-btn { position:absolute; top:8px; right:8px; background:none; border:none; cursor:pointer; color:#ccc; font-size:16px; transition:color 0.2s; }
+  .rm-btn:hover { color:#e44; }
+
+  .cart-foot { padding:20px; border-top:2px solid var(--cream); }
+  .cart-sum { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .cart-total { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--green-deep); }
+  .wa-btn {
+    width:100%; padding:16px;
+    background:linear-gradient(135deg, #25D366, #128C7E);
+    color:white; border:none; cursor:pointer; border-radius:14px;
+    font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    transition:all 0.25s; box-shadow:0 6px 24px rgba(37,211,102,0.35);
+  }
+  .wa-btn:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(37,211,102,0.5); }
+  .wa-btn svg { width:22px; height:22px; fill:white; }
+  .cart-note { text-align:center; font-size:12px; color:#aaa; margin-top:10px; }
+
+  footer { background:var(--green-deep); color:rgba(255,255,255,0.7); text-align:center; padding:28px 48px; font-size:0.9rem; }
+  footer strong { color:var(--gold); }
+  footer a { color:var(--gold-light); text-decoration:none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .topbar { padding:12px 18px; }
+    .logo-text strong { font-size:13px; }
+    .hero-body { padding:36px 18px 48px; }
+    .offers-section, .lang-section, .books-section { padding-left:18px; padding-right:18px; }
+    .lang-tabs { flex-direction:column; }
+    .lang-tab { min-width:unset; flex-direction:row; padding:14px 18px; }
+    .books-grid { grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:18px; }
+    .cart-sidebar { width:100%; max-width:420px; }
+    footer { padding:20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-logo">Mishkath</div>
+  <div class="loader-sub">Loading Publications...</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="topbar">
+    <div class="logo-wrap">
+      <div class="logo-icon">M</div>
+      <div class="logo-text">
+        <strong>Mishkath Research Institute</strong>
+        <span>Colombo, Sri Lanka · Publications</span>
+      </div>
+    </div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+
+  <div class="hero-body">
+    <div class="hero-eyebrow">📚 Official Bookstore</div>
+    <h1 class="hero-title">Mishkath Research Institute</h1>
+    <p class="hero-subtitle">Publications & Books</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">Explore our collection of scholarly Islamic publications in Tamil, English and Sinhala. Order via WhatsApp and receive doorstep delivery across Sri Lanka.</p>
+  </div>
+
+  <div class="offers-section">
+    <div class="offers-label">Special Offers &amp; Announcements</div>
+    <div class="banners-row">
+      <div class="offer-banner b1">
+        <span class="nb">NEW</span>
+        <div class="bi">🌟</div>
+        <div><strong>New Release – B15</strong><span>Islamic Law of Inheritance – Tamil Edition now available!</span></div>
+      </div>
+      <div class="offer-banner b2">
+        <div class="bi">📦</div>
+        <div><strong>Bundle Offer</strong><span>Order any 3 books and get free delivery island-wide</span></div>
+      </div>
+      <div class="offer-banner b3">
+        <div class="bi">🎁</div>
+        <div><strong>Ramadan Special</strong><span>Special discounts on Zakat guide books this season</span></div>
+      </div>
+      <div class="offer-banner b1">
+        <span class="nb">HOT</span>
+        <div class="bi">📖</div>
+        <div><strong>Best Seller – B14</strong><span>Zakat: A Practical Guide – English edition highly recommended</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LANGUAGE TABS -->
+<div class="lang-section">
+  <h2 class="section-title">Browse by Language</h2>
+  <p class="section-sub">Select your preferred language to explore our publications</p>
+  <div class="lang-tabs">
+    <div class="lang-tab active" onclick="selectLang('tamil',this)">
+      <div class="lang-tab-icon">🇱🇰</div>
+      <div class="lang-tab-name">தமிழ் Books</div>
+      <div class="lang-tab-count">Tamil · 8 Books</div>
+    </div>
+    <div class="lang-tab" onclick="selectLang('english',this)">
+      <div class="lang-tab-icon">🇬🇧</div>
+      <div class="lang-tab-name">English Books</div>
+      <div class="lang-tab-count">English · 5 Books</div>
+    </div>
+    <div class="lang-tab" onclick="selectLang('sinhala',this)">
+      <div class="lang-tab-icon">🕌</div>
+      <div class="lang-tab-name">සිංහල Books</div>
+      <div class="lang-tab-count">Sinhala · 2 Books</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKS GRID -->
+<div class="books-section">
+  <div class="books-header">
+    <h3 class="books-title" id="gridTitle">Tamil Language Books</h3>
+    <span class="filter-note" id="gridCount">Showing 8 books</span>
+  </div>
+  <div class="books-grid" id="booksGrid"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-img-wrap">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <div><h3>Your Cart</h3><small>Mishkath Publications</small></div>
+    <button class="close-cart" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-sum">
+      <span style="color:#7a6e60;font-size:1rem">Total</span>
+      <span class="cart-total" id="cartTotal">Rs 0</span>
+    </div>
+    <button class="wa-btn" onclick="orderViaWhatsApp()">
+      <svg viewBox="0 0 32 32"><path d="M16 3C9.37 3 4 8.37 4 15c0 2.3.63 4.45 1.73 6.3L4 29l7.93-1.69A12.93 12.93 0 0016 28c6.63 0 12-5.37 12-12S22.63 3 16 3zm0 22.5a10.44 10.44 0 01-5.3-1.44l-.38-.22-3.94.84.87-3.82-.25-.4A10.43 10.43 0 015.5 15c0-5.79 4.71-10.5 10.5-10.5S26.5 9.21 26.5 15 21.79 25.5 16 25.5zm5.77-7.87c-.32-.16-1.88-.93-2.17-1.03-.29-.1-.5-.16-.71.16-.21.32-.82 1.03-1 1.24-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.15-.14.32-.37.48-.55.16-.18.21-.32.32-.53.1-.21.05-.4-.03-.56-.08-.16-.71-1.71-.97-2.34-.26-.62-.52-.53-.71-.54l-.6-.01c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.63s1.13 3.06 1.28 3.27c.16.21 2.22 3.39 5.38 4.76.75.32 1.34.52 1.8.66.75.24 1.44.21 1.98.13.6-.09 1.88-.77 2.14-1.51.26-.74.26-1.38.18-1.51-.08-.13-.29-.21-.61-.37z"/></svg>
+      Order via WhatsApp
+    </button>
+    <p class="cart-note">📞 +94 77 789 1344 · Fast response guaranteed</p>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Mishkath Research Institute</strong> – Colombo, Sri Lanka</p>
+  <p style="margin-top:6px">📞 <a href="tel:+94777891344">+94 77 789 1344</a> · Order via WhatsApp anytime</p>
+  <p style="margin-top:6px;font-size:0.8rem;opacity:0.55">© 2025 Mishkath Research Institute. All rights reserved.</p>
+</footer>
+
+<!-- covers.js loaded FIRST so COVERS is available when main.js runs -->
+<script src="covers.js"></script>
+<script>
+/* ═══════════ BOOK DATA ═══════════ */
+const books = {
+  tamil: [
+    {id:"B01",lang:"Tamil",isNew:false,price:750,title:"ஸகாத் – ஒரு பிரயோக வழிகாட்டல்",titleEn:"Zakat – A Practical Guide (Tamil)",contents:["ஸகாத் விதியாகும் செல்வங்களுக்கான பொது நிபந்தனைகள்","ஸகாத்துக்கான செல்வ மூலங்கள்","ஸகாத் விநியோகம்"]},
+    {id:"B02",lang:"Tamil",isNew:false,price:400,title:"மனிதநேயத் தூதர் முஹம்மத் ﷺ",titleEn:"Humanitarian Envoy Muhammad (Tamil)",contents:["இறைத் தூதரின் உன்னத வாழ்வு","நீதிய இறைத்தூதரது சட்ட யாப்பு","மக்களின் பிரச்சினைகளைத் தீர்க்கும் இறைத்தூதரது வணக்கம்"]},
+    {id:"B03",lang:"Tamil",isNew:false,price:400,title:"அல்குர்ஆன் வன்முறையைத் தூண்டுகிறதா?",titleEn:"Does Al-Qur'an Encourage Violence? (Tamil)",contents:["போர்: ஒர் அல்குர்ஆனியப் பார்வை","பிழையாகப் புரிந்துகொள்ளப்பட்ட இறை வசனங்கள்","அல்குர்ஆனில் போரைத் தூண்டும் வசனங்கள் காணப்படுவதற்கான காரணங்கள்"]},
+    {id:"B04",lang:"Tamil",isNew:false,price:200,title:"மதத்தைத் துறத்தலும் மத நிந்தனையும் – ஒரு பார்வை",titleEn:"Apostasy & Blasphemy – A Review (Tamil)",contents:["ரித்தத் – மதத்தைத் துறத்தல் ஒரு விளக்கம்","மத நிந்தனை"]},
+    {id:"B05",lang:"Tamil",isNew:false,price:400,title:"இஸ்லாமிய சட்டப் பின்னணியில் குடும்பப் பொருளாதாரப் பராமரிப்பு",titleEn:"Family Financial Support – Islamic Perspective (Tamil)",contents:["இரத்த உறவின் முக்கியத்துவம்","இரத்த உறவும் பொருளாதாரப் பராமரிப்பும்","செலவழித்தவுக்கான வழிகாட்டல்கள்","குடும்பப் பராமரிப்புக்கான மாதிரித் திட்டம்"]},
+    {id:"B06",lang:"Tamil",isNew:false,price:400,title:"ஸூரா திலாக் விளக்கவுரை",titleEn:"Surah At-Talaq Commentary (Tamil)",contents:["ஸூரா அத்தலாக்: பொது அறிமுகம்","சட்டங்களும் வழிகாட்டல்களும்","இறை சட்டங்களைப் பின்பற்றலின் அவசியம்"]},
+    {id:"B07",lang:"Tamil",isNew:false,price:400,title:"இஸ்லாமிய ஷரீஆ – யதார்த்தமும் பிரயோகமும்",titleEn:"Islamic Sharia – Reality & Application (Tamil)",contents:["ஷரீஆ – அர்த்தமும் வரைவிலக்கணமும்","அல்குர்ஆன் ஒரு சட்ட நூலா?","மனித நலன்களை மையப்படுத்தும் ஷரீஆவின் உயர் இலக்குகள்","இஸ்லாமிய ஷரீஆவும் இலங்கை முஸ்லிம் சமூகமும்"]},
+    {id:"B13",lang:"Tamil",isNew:true,price:200,title:"ஸகாத் – பிரயோகம் சார் பத்வாக்கள்",titleEn:"Zakat – Practical Fatwas (Tamil)",contents:["கேள்வி பதில்"]},
+  ],
+  english: [
+    {id:"B10",lang:"English",isNew:false,price:400,title:"Financial Support within the Family – An Islamic Perspective",titleEn:"Financial Support within the Family",contents:["Importance of maintaining blood relationships","Blood relationship and financial support","Blood relatives to be financially supported","Guidelines for financial support","Social benefits of financial support","A Model plan for family financial support"]},
+    {id:"B11",lang:"English",isNew:false,price:400,title:"Humanitarian Envoy Muhammed ﷺ",titleEn:"Humanitarian Envoy Muhammad",contents:["The Noble life of the Prophet","Justice is the gist of Prophet's constitution","The Prophet's worship is solving the problems of the people"]},
+    {id:"B12",lang:"English",isNew:false,price:400,title:"Does Al-Qur'an Encourage Violence?",titleEn:"Does Al-Qur'an Encourage Violence?",contents:["War: A Qur'anic Approach","Misunderstood Divine Verses","Why does the Qur'an Contain Verses that Encourage War?"]},
+    {id:"B14",lang:"English",isNew:false,price:750,title:"Zakat – A Practical Guide",titleEn:"Zakat – A Practical Guide",contents:["General conditions of Zakatable wealth","Sources of Zakatable wealth","Zakat distribution","Institutionalization of Zakat"]},
+    {id:"B15",lang:"English",isNew:true,price:400,title:"Islamic Law of Inheritance – Explained & Applied in Sri Lanka",titleEn:"Islamic Law of Inheritance",contents:["Islamic Inheritance Law introduction","Types of heirs and share allocation","Case studies from field research","Inheritance under Sri Lanka Muslim Personal Law","Testamentary Actions"]},
+  ],
+  sinhala: [
+    {id:"B08",lang:"Sinhala",isNew:false,price:400,title:"අල්-කුර්ආනය ප්‍රචණ්ඩත්වයට පොළොඹ වන්නේද?",titleEn:"Does Al-Quran Encourage Violence? (Sinhala)",contents:["යුද්ධය: අල් - කුර්ආන් දෘෂ්ටි කෝණයෙන්","වැරදි ලෙස වටහා ගන්නා ලද අල්-කුර්ආන් පාඨ","යුද්ධ සඳහා පොළොඹවන පාඨ නිමිත්ත..."]},
+    {id:"B09",lang:"Sinhala",isNew:false,price:400,title:"කුර්ආන් විකාශය – Surah Al-Fatiha & Al-Baqara",titleEn:"Quran Exposition – Sinhala Edition",contents:["පරිච්ඡේද අල්-ෆාතිහා සූරවිකාශ","පරිච්ඡේද අල්-බකරා (1–286) detailed commentary","Detailed thematic analysis"]},
+  ]
+};
+
+/* ═══════════ STATE ═══════════ */
+let cart = [], currentLang = 'tamil';
+
+/* ═══════════ INIT ═══════════ */
+window.addEventListener('load', () => {
+  renderBooks('tamil');
+  renderCartItems();
+  // Hide loading screen once everything ready
+  const ls = document.getElementById('loadingScreen');
+  setTimeout(() => {
+    ls.classList.add('fade-out');
+    setTimeout(() => ls.style.display = 'none', 600);
+  }, 1300);
+});
+
+/* ═══════════ RENDER ═══════════ */
+function renderBooks(lang) {
+  const grid = document.getElementById('booksGrid');
+  const lb = books[lang];
+  const titles = {tamil:'Tamil Language Books',english:'English Language Books',sinhala:'Sinhala Language Books'};
+  document.getElementById('gridTitle').textContent = titles[lang];
+  document.getElementById('gridCount').textContent = `Showing ${lb.length} books`;
+
+  grid.innerHTML = lb.map((b,i) => {
+    const inCart = cart.find(c => c.id === b.id);
+    const src = (typeof COVERS !== 'undefined' && COVERS[b.id]) ? COVERS[b.id] : '';
+    return `
+    <div class="book-card" style="transition-delay:${i*65}ms" data-id="${b.id}">
+      <div class="book-cover" onclick="openLightbox('${b.id}','${b.titleEn.replace(/'/g,"\\'")}')">
+        <span class="badge-lang">${b.lang}</span>
+        ${b.isNew ? '<span class="badge-new">🆕 New</span>' : ''}
+        <img src="${src}" alt="${b.titleEn}" loading="lazy">
+        <span class="cover-zoom-hint">🔍 Click to enlarge</span>
+        <span class="price-badge">Rs ${b.price.toLocaleString()}</span>
+      </div>
+      <div class="book-body">
+        <div class="book-id">${b.id} · ${b.lang}</div>
+        <div class="book-name">${b.title}</div>
+        <div class="book-contents"><ul>${b.contents.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+      </div>
+      <div class="book-footer">
+        <button class="add-btn ${inCart?'added':''}" onclick="addToCart('${b.id}','${lang}',this)">
+          ${inCart ? '✓ Added to Cart' : '🛒 Add to Cart'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.book-card').forEach((el,i) => setTimeout(() => el.classList.add('visible'), i*65));
+  });
+}
+
+function selectLang(lang, tab) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const grid = document.getElementById('booksGrid');
+  grid.style.opacity = '0';
+  setTimeout(() => { renderBooks(lang); grid.style.opacity='1'; }, 160);
+}
+
+/* ═══════════ LIGHTBOX ═══════════ */
+function openLightbox(id, cap) {
+  const src = (typeof COVERS !== 'undefined') ? COVERS[id] : '';
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxCaption').textContent = cap;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+
+/* ═══════════ CART ═══════════ */
+function addToCart(id, lang, btn) {
+  const book = books[lang].find(b => b.id === id);
+  const ex = cart.find(c => c.id === id);
+  if (ex) ex.qty++; else cart.push({...book, qty:1});
+  btn.textContent = '✓ Added to Cart'; btn.classList.add('added');
+  updateCartCount(); renderCartItems();
+  const cb = document.querySelector('.cart-btn');
+  cb.style.transform = 'scale(1.15)';
+  setTimeout(() => cb.style.transform = '', 200);
+}
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  updateCartCount(); renderCartItems();
+  document.querySelectorAll(`.book-card[data-id="${id}"] .add-btn`).forEach(b => {
+    b.textContent = '🛒 Add to Cart'; b.classList.remove('added');
+  });
+}
+function changeQty(id, d) {
+  const item = cart.find(c => c.id === id);
+  if (item) { item.qty = Math.max(1, item.qty + d); updateCartCount(); renderCartItems(); }
+}
+function updateCartCount() {
+  document.getElementById('cartCount').textContent = cart.reduce((s,c)=>s+c.qty,0);
+}
+function renderCartItems() {
+  const el = document.getElementById('cartItems');
+  const tEl = document.getElementById('cartTotal');
+  if (!cart.length) {
+    el.innerHTML = `<div class="cart-empty"><div class="ei">🛒</div><p>Your cart is empty.<br>Add some books to get started!</p></div>`;
+    tEl.textContent = 'Rs 0'; return;
+  }
+  const src = (id) => (typeof COVERS !== 'undefined' && COVERS[id]) ? COVERS[id] : '';
+  el.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="ci-cover"><img src="${src(item.id)}" alt="${item.titleEn}"></div>
+      <div class="ci-info">
+        <div class="ci-id">${item.id} · ${item.lang}</div>
+        <div class="ci-name">${item.title}</div>
+        <div class="ci-controls">
+          <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+          <span class="qty-n">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          <div class="ci-price">Rs ${(item.price*item.qty).toLocaleString()}</div>
+        </div>
+      </div>
+      <button class="rm-btn" onclick="removeFromCart('${item.id}')">✕</button>
+    </div>`).join('');
+  tEl.textContent = `Rs ${cart.reduce((s,c)=>s+c.price*c.qty,0).toLocaleString()}`;
+}
+function toggleCart() {
+  document.getElementById('cartSidebar').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+function orderViaWhatsApp() {
+  if (!cart.length) { alert('Your cart is empty! Please add books first.'); return; }
+  const lines = cart.map(c=>`• ${c.id} – ${c.titleEn} (x${c.qty}) – Rs ${(c.price*c.qty).toLocaleString()}`).join('\n');
+  const total = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const msg = `📚 *Book Order – Mishkath Research Institute*\n\n${lines}\n\n*Total: Rs ${total.toLocaleString()}*\n\nPlease confirm my order and delivery details. Thank you!`;
+  window.open(`https://wa.me/94777891344?text=${encodeURIComponent(msg)}`, '_blank');
+}
+</script>
+</body>
+</html>

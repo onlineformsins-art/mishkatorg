@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><style>img { max-width: 300px; margin: 10px; border: 1px solid red; }</style></head>
+<body>
+<h1>Gallery</h1>
+<div id="gallery"></div>
+<script>
+const files = [
+"media__1777641647812.jpg", "media__1777641647895.jpg", "media__1777641647930.jpg", "media__1777641647950.jpg",
+"media__1777649277215.jpg", "media__1777649277250.jpg", "media__1777649277301.jpg", "media__1777649277329.jpg", "media__1777649277342.jpg",
+"media__1777649538583.jpg", "media__1777649538645.jpg", "media__1777649538738.jpg", "media__1777649538771.jpg", "media__1777649538785.jpg",
+"media__1777649788255.jpg", "media__1777649788290.jpg", "media__1777649788328.jpg", "media__1777649788383.jpg", "media__1777649788396.jpg",
+"media__1777650047252.jpg", "media__1777650047263.jpg"
+];
+const gallery = document.getElementById('gallery');
+files.forEach(f => {
+    gallery.innerHTML += `<div><h3>${f}</h3><img src="${f}" /></div>`;
+});
+</script>
+</body>
+</html>
