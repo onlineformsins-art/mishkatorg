@@ -140,6 +140,29 @@
         .tab-pane { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Flash Preview Carousel */
+        .flash-preview-section { padding: 80px 0; position: relative; z-index: 10; }
+        .carousel-container { position: relative; width: 100%; max-width: 900px; margin: 0 auto; border-radius: 24px; overflow: hidden; box-shadow: var(--glass-shadow); background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); }
+        .carousel-slides { display: flex; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; }
+        .carousel-slide { min-width: 100%; display: flex; flex-direction: row; align-items: center; gap: 30px; padding: 40px; box-sizing: border-box; opacity: 0.5; transition: opacity 0.6s ease; }
+        .carousel-slide.active { opacity: 1; }
+        .carousel-image { flex: 1; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .carousel-image img { width: 100%; height: auto; display: block; object-fit: cover; }
+        .carousel-content { flex: 1.2; display: flex; flex-direction: column; justify-content: center; }
+        .carousel-badge { display: inline-block; padding: 5px 12px; background: rgba(241, 180, 52, 0.1); color: var(--brand-yellow); border: 1px solid rgba(241, 180, 52, 0.3); border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; width: max-content; }
+        .carousel-title { font-size: 1.8rem; color: #fff; margin-bottom: 15px; line-height: 1.3; }
+        .carousel-desc { color: var(--text-muted); font-size: 1rem; margin-bottom: 25px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .carousel-actions { display: flex; gap: 15px; align-items: center; }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+        .btn-outline:hover { border-color: var(--brand-yellow); color: var(--brand-yellow); background: rgba(241, 180, 52, 0.05); }
+        
+        .carousel-nav { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 20; }
+        .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: var(--transition-smooth); }
+        .carousel-dot.active { background: var(--brand-yellow); transform: scale(1.3); }
+
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(37, 211, 102, 0.9); color: #fff; padding: 12px 25px; border-radius: 30px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(10px); z-index: 1000; opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
         @media (max-width: 1024px) {
             .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .about-visual { height: 500px; order: -1; }
@@ -149,6 +172,9 @@
             .footer-content { flex-direction: column; gap: 30px; }
         }
         @media (max-width: 768px) {
+            .carousel-slide { flex-direction: column; padding: 30px 20px; text-align: center; }
+            .carousel-badge { margin: 0 auto 15px; }
+            .carousel-actions { justify-content: center; }
             .nav-links { display: none; }
             h1 { font-size: 3rem; }
             section { padding: 80px 0; }
@@ -179,6 +205,7 @@
             <a href="#achievements">Impact</a>
             <a href="#resources">Events & Galleries</a>
             <a href="#contact">Contact</a>
+            <a href="#" id="nav-inheritance-assistant" style="color: var(--brand-yellow); font-weight: 600;">Inheritance Assistant</a>
             <a href="books.html" target="_blank" style="color: var(--brand-yellow);">Books & Publications</a>
         </div>
     </nav>
@@ -191,6 +218,65 @@
             <a href="#about" class="btn">Discover Our Vision</a>
         </div>
     </section>
+
+    <!-- Flash Preview Carousel Section -->
+    <section class="flash-preview-section reveal">
+        <div class="container">
+            <div class="text-center" style="max-width: 800px; margin: 0 auto 40px; text-align: center;">
+                <h2 style="font-size: 2.5rem;">Latest <span class="text-accent">Updates</span></h2>
+            </div>
+            
+            <div class="carousel-container" id="updates-carousel">
+                <div class="carousel-slides" id="carousel-track">
+                    
+                    <!-- Slide 1: Latest Event -->
+                    <div class="carousel-slide active" id="post-event-hajj">
+                        <div class="carousel-image">
+                            <img src="media__hajj_vanakkam.jpeg" alt="Hajj Vanakkam Event Poster" onerror="this.src='media__1777655535688.jpg'">
+                        </div>
+                        <div class="carousel-content">
+                            <span class="carousel-badge">Upcoming Event</span>
+                            <h3 class="carousel-title">ஹஜ் வணக்கம்: பொருளும் சிந்தனைகளும்</h3>
+                            <p class="carousel-desc">ஆன்மீகத் தொடர் விரிவுரை. விரிவுரையாளர்: உஸ்தாத் மன்ஸூர். மே 06, 2026 அன்று மாலை 06.30 மணிக்கு மிஷ்காத் ஆய்வு நிறுவனத்தில் நடைபெறும்.</p>
+                            <div class="carousel-actions">
+                                <a href="#resources" onclick="openTab(event, 'tab-events')" class="btn" style="padding: 12px 25px; font-size: 0.9rem;">Read More</a>
+                                <button onclick="sharePost('post-event-hajj')" class="btn btn-outline" style="padding: 12px 25px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Latest Article -->
+                    <div class="carousel-slide" id="post-article-hujurat">
+                        <div class="carousel-image">
+                            <img src="media__hujurat_summary.jpg" alt="Article Preview" onerror="this.src='media__1777655737887.jpg'">
+                        </div>
+                        <div class="carousel-content">
+                            <span class="carousel-badge">Latest Article</span>
+                            <h3 class="carousel-title">உங்கள் நாவைக் கட்டுப்படுத்துங்கள்: சமூக உறவுகளைச் சீரமைக்க சூரத்துல் ஹுஜுராத்</h3>
+                            <p class="carousel-desc">ஒரு சிறு சொல் ஒரு வாழ்நாள் உறவைச் சிதைப்பதையும், ஒரு தவறான செய்தி சமூகத்தில் பெரும் கலவரத்தைத் தூண்டுவதையும் நாம் அன்றாடம் காண்கிறோம். மனித உறவுகளில் ஏற்படும் இத்தகைய சிக்கல்களுக்குத் தீர்வாக அமைவதுதான் நம்முடைய 'நாவு'.</p>
+                            <div class="carousel-actions">
+                                <a href="#resources" onclick="openTab(event, 'tab-articles')" class="btn" style="padding: 12px 25px; font-size: 0.9rem;">Read More</a>
+                                <button onclick="sharePost('post-article-hujurat')" class="btn btn-outline" style="padding: 12px 25px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="carousel-nav" id="carousel-dots">
+                    <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification for Share -->
+    <div id="share-toast" class="toast">Link Copied to Clipboard!</div>
 
     <!-- Interactive Portal / Resources -->
     <section id="resources">
@@ -207,6 +293,7 @@
                     <button class="tab-btn" onclick="openTab(event, 'tab-articles')">Articles</button>
                     <button class="tab-btn" onclick="openTab(event, 'tab-courses')">Courses</button>
                     <button class="tab-btn" onclick="openTab(event, 'tab-videos')">Videos</button>
+                    <button class="tab-btn" onclick="openTab(event, 'tab-radio')">Listen Radio</button>
                 </div>
                 
                 <!-- Tab Content -->
@@ -216,8 +303,12 @@
                         <h3 style="color: var(--brand-yellow); margin-bottom: 20px;">Upcoming Events</h3>
                         <p style="margin-bottom: 40px; color: var(--text-muted);">Stay updated with our latest seminars, workshops, and community outreach programs.</p>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                            <!-- New Event: Hajj Vanakkam -->
+                            <div class="tilt-card levitate-slow" style="border-radius: 20px; overflow: hidden; box-shadow: var(--glass-shadow); grid-column: 1 / -1; max-width: 500px; margin: 0 auto;">
+                                <img src="media__hajj_vanakkam.jpeg" alt="Hajj Vanakkam Event Poster" style="width: 100%; display: block;" class="tilt-card-inner" onerror="this.src='media__1777655535688.jpg'">
+                            </div>
                             <!-- Event 1 -->
-                            <div class="tilt-card levitate-slow" style="border-radius: 20px; overflow: hidden; box-shadow: var(--glass-shadow);">
+                            <div class="tilt-card levitate-slow" style="border-radius: 20px; overflow: hidden; box-shadow: var(--glass-shadow); animation-delay: 0.1s;">
                                 <img src="media__1777655535688.jpg" alt="Event Poster 1" style="width: 100%; display: block;" class="tilt-card-inner" onerror="this.style.display='none'">
                             </div>
                             <!-- Event 2 -->
@@ -242,18 +333,21 @@
                                     கடந்த புதன் கிழமை <strong>"சமூக அழிவுக்கான காரணங்களும் ஈமானிய நடத்தையும்"</strong> என்ற தலைப்பில் சிறப்பு ஹதீஸ் விரிவுரை நடைபெற்றது. இத்தொடர் இரு வாரங்களுக்கு ஒரு முறை எமது அமைவிடத்தில் தொடர்ந்தும் நடைபெறும் என்பது குறிப்பிடத்தக்கது.
                                 </p>
                                 
-                                <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; margin-bottom: 35px;">
-                                    அதேபோன்று ஏனைய பிரதேசங்களிலுள்ளோர் எமது YouTube channel-ஐ subscribe செய்வதன் மூலம் எமது தொடர் வகுப்புகளின் காணொளிகளைப் பார்க்க முடியும். வகுப்பு இடம்பெற்று இரு வாரங்களுக்குள்ளால் காணொளிகள் பதிவேற்றம் செய்யப்படும்.
-                                </p>
-                                
-                                <div style="display: flex; flex-direction: column; gap: 15px;">
-                                    <a href="https://chat.whatsapp.com/KLOFVY70VaV01MRTeSOUkP?mode=gi_t" target="_blank" class="btn" style="background: #25D366; text-align: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);">
-                                        <span style="font-size: 1.2rem;">💬</span> WhatsApp குழுமத்தில் இணைய
-                                    </a>
-                                    <a href="https://youtube.com/@mishkathresearch7753" target="_blank" class="btn" style="background: #FF0000; text-align: center; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);">
-                                        <span style="font-size: 1.2rem;">▶️</span> YouTube-ல் காணொளிகளை காண
-                                    </a>
+                                <div class="content-full" style="display: none;">
+                                    <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; margin-bottom: 35px;">
+                                        அதேபோன்று ஏனைய பிரதேசங்களிலுள்ளோர் எமது YouTube channel-ஐ subscribe செய்வதன் மூலம் எமது தொடர் வகுப்புகளின் காணொளிகளைப் பார்க்க முடியும். வகுப்பு இடம்பெற்று இரு வாரங்களுக்குள்ளால் காணொளிகள் பதிவேற்றம் செய்யப்படும்.
+                                    </p>
+                                    
+                                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                                        <a href="https://chat.whatsapp.com/KLOFVY70VaV01MRTeSOUkP?mode=gi_t" target="_blank" class="btn" style="background: #25D366; text-align: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);">
+                                            <span style="font-size: 1.2rem;">💬</span> WhatsApp குழுமத்தில் இணைய
+                                        </a>
+                                        <a href="https://youtube.com/@mishkathresearch7753" target="_blank" class="btn" style="background: #FF0000; text-align: center; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);">
+                                            <span style="font-size: 1.2rem;">▶️</span> YouTube-ல் காணொளிகளை காண
+                                        </a>
+                                    </div>
                                 </div>
+                                <button class="btn btn-outline" onclick="toggleReadMore(this)" style="margin-top: 20px; padding: 10px 25px; font-size: 0.9rem;">Read More</button>
                             </div>
 
                             <!-- Image Gallery -->
@@ -276,6 +370,97 @@
                 </div>
 
                 <div id="tab-articles" class="tab-pane" style="padding: 40px; display: none;">
+                    
+                    <!-- Article: Hujurat Guide -->
+                    <div class="glass-panel" style="padding: 40px; background: rgba(0,0,0,0.5); margin-bottom: 40px;">
+                        <h2 style="color: var(--brand-yellow); margin-bottom: 10px; font-size: 1.8rem; line-height: 1.4;">உங்கள் நாவைக் கட்டுப்படுத்துங்கள்: சமூக உறவுகளைச் சீரமைக்க சூரத்துல் ஹுஜுராத்</h2>
+                        <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 15px; font-weight: 500;">தொடர் - 02 | நாவெனும் திசைகாட்டி</h3>
+                        
+                        <div style="display: flex; gap: 15px; margin-bottom: 30px; font-size: 0.95rem; color: #cbd5e1; border-left: 3px solid var(--brand-yellow); padding-left: 15px;">
+                            <span>✍️ மிஷ்காத் ஆய்வு நிறுவனம்</span>
+                            <span>📅 05.05.2026</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 40px;" class="tilt-card levitate-slow">
+                            <img src="media__hujurat_summary.jpg" alt="Hujurat Summary" class="tilt-card-inner" style="width: 100%; border-radius: 15px; display: block; box-shadow: var(--glass-shadow);" onerror="this.style.display='none'">
+                        </div>
+
+                        <div style="color: #f8f9fa; font-size: 1.1rem; line-height: 1.9; font-weight: 300;">
+                            <p style="margin-bottom: 25px;">இன்றைய நவீன உலகில், நம் விரல் நுனியில் உலகம் சுருங்கிக்கிடக்கிறது. சமூக ஊடகங்களின் பெருக்கத்தாலும், உரையாடல் கலாச்சாரத்தின் மாற்றத்தாலும் நாம் முன்பை விட அதிகம் பேசுகிறோம், பகிர்கிறோம். ஆனால், இத்தனை உரையாடல்களுக்கு மத்தியிலும் தேவையற்ற சண்டைகளும், கசப்பான பிரிவுகளும் ஏன் மலிந்து கிடக்கின்றன?</p>
+
+                            <p style="margin-bottom: 25px;">ஒரு சிறு சொல் ஒரு வாழ்நாள் உறவைச் சிதைப்பதையும், ஒரு தவறான செய்தி சமூகத்தில் பெரும் கலவரத்தைத் தூண்டுவதையும் நாம் அன்றாடம் காண்கிறோம்.</p>
+
+                            <p style="margin-bottom: 25px;">மனித உறவுகளில் ஏற்படும் இத்தகைய சிக்கல்களுக்குத் தீர்வாக அமைவதுதான் நம்முடைய <strong>'நாவு'</strong>. ஒரு மனிதனின் நாவு சீரானால், அவனது வாழ்வும் சமூகமும் சீராகும்.</p>
+
+                            <div class="content-full" style="display: none;">
+                                <p style="margin-bottom: 35px;">புனித குர்ஆனின் 49-வது அத்தியாயமான <strong>'சூரத்துல் ஹுஜுராத்'</strong>, ஒரு மனிதன் இறைவனுடனும், அவனது தூதருடனும் மற்றும் சக மனிதர்களுடனும் எவ்வாறு கண்ணியமாக உறவாட வேண்டும் என்பதைக் கற்றுத்தரும் உன்னத 'ஒழுக்கக் கையேடு'.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">நாவைக் கட்டுப்படுத்துதல் - ஆளுமையின் அஸ்திவாரம்</h3>
+                            <p style="margin-bottom: 25px;">இந்த சூரா முழுமைக்கும் ஒரு பொதுவான இழையை நாம் அவதானிக்க முடியும்: அதுதான் 'நாவைக் கட்டுப்படுத்துதல்'. இதில் சொல்லப்பட்டுள்ள செய்திகளை உறுதிப்படுத்துதல் முதல் புறம் பேசாதிருப்பது வரை அனைத்துமே ஏதோ ஒரு வகையில் நமது பேச்சோடு தொடர்புடையவை.</p>
+                            
+                            <p style="margin-bottom: 25px;">நாவிற்கும் ஒரு மனிதனின் செயல்பாட்டிற்கும் ஆழமான உளவியல் தொடர்பு உண்டு. இது குறித்து உமர் (ரலி) அவர்களின் ஒரு தத்துவத்தை நாம் இங்கே எண்ணிப் பார்க்க வேண்டும். ஒருமுறை உமர் (ரலி) அவர்கள் ஒரு பணியாளரைத் தேர்ந்தெடுப்பதில் காலம் தாழ்த்தினார்கள். காரணம் கேட்டபோது, <em>"அவர் அதிகம் பேசுகிறார்; அதிகம் பேசுபவர்களிடம் செயல் குறைவாகவே இருக்கும்"</em> என்றார்கள்.</p>
+                            
+                            <p style="margin-bottom: 35px;">இதையே <strong>"நாவு நீண்டால் செயல் குறுகும்"</strong> என்ற தத்துவமாக அவர் முன்வைக்கிறார். அதாவது, பேச்சு என்பது பல நேரங்களில் செயலுக்கான மாற்றாகவோ அல்லது ஒரு தற்காப்பு அரணாகவோ பயன்படுத்தப்படுகிறது. நாவை ஆள்பவன் தன் ஆளுமையை ஆள்கிறான். நாவைக் கட்டுப்படுத்தும்போது உள்ளம் அமைதி பெறுகிறது, அந்த அமைதி செயலில் பிரதிபலிக்கிறது.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">முதலாவது பாடம்: கண்ணியம் மற்றும் சமூக நாகரீகம்</h3>
+                            <p style="margin-bottom: 25px;">சூராவின் முதல் ஐந்து வசனங்கள் ஒரு தலைவரிடம் அல்லது இறைத்தூதரிடம் ஒரு விசுவாசி கடைபிடிக்க வேண்டிய உயரிய ஒழுக்கங்களைப் பேசுகின்றன. குறிப்பாக, பேச்சு வழக்கில் இருக்க வேண்டிய கண்ணியத்தை இவை வலியுறுத்துகின்றன. நபி (ஸல்) அவர்களுக்கு முன்பாக முந்திக்கொண்டு கருத்துக்களைத் திணிக்காமல் இருப்பதும், அவர்களின் முன்னிலையில் குரலை உயர்த்திப் பேசாமல் இருப்பதும் ஈமானின் அடிப்படைப் பண்புகளாக முன்வைக்கப்படுகின்றன.</p>
+                            
+                            <blockquote style="border-left: 4px solid var(--brand-yellow); padding: 15px 20px; background: rgba(255,255,255,0.05); margin-bottom: 25px; border-radius: 0 10px 10px 0; font-style: italic;">
+                                "நீங்கள் உணராமலேயே உங்கள் நன்மைகள் அழிந்து போகக்கூடும்."
+                            </blockquote>
+                            
+                            <p style="margin-bottom: 25px;">இந்த எச்சரிக்கை மிகவும் ஆழமானது. இங்கே ஒரு நுணுக்கமான விஷயத்தை நாம் கவனிக்க வேண்டும். ஹிஜ்ரி ஒன்பதாம் ஆண்டு, 'பனு தமீம்' போன்ற நாடோடி அரபுக் கோத்திரங்கள் (Bedouins) நபி (ஸல்) அவர்களைச் சந்திக்க வந்தனர். அவர்கள் நாகரீகம் தெரியாமல், நபி (ஸல்) அவர்களின் அறைகளுக்குப் பின்னாலிருந்து "யா முஹம்மத்! வெளியே வாருங்கள்!" என்று சத்தமிட்டு அழைத்தனர்.</p>
+
+                            <p style="margin-bottom: 35px;">இவர்களை குர்ஆன் 'பாவிகள்' என்று அழைக்கவில்லை; மாறாக <strong>"அறிவற்றவர்கள்"</strong> (அதாவது சமூக ஒழுக்கம் தெரியாதவர்கள்) என்று அழைக்கிறது. அவர்களின் பின்னணி மற்றும் போதிய பயிற்சியின்மை காரணமாகவே அவர்கள் அவ்வாறு நடந்துகொண்டனர். அதனால்தான் அந்த வசனத்தின் இறுதியில் அல்லாஹ் "மன்னிப்பவன், நிகரற்ற அன்புடையவன்" (Ghafoorur Raheem) என்ற பண்புகளைக் குறிப்பிடுகிறான். அறியாமையினால் செய்த தவறுகளை அல்லாஹ் மன்னிக்கிறான், ஆனால் அதே சமயம் ஒழுக்கத்தை நோக்கி அவர்களைப் பயிற்றுவிக்கவும் செய்கிறான். மரியாதை என்பது வெறும் சடங்கல்ல, அது உள்ளத்தின் 'தக்வா' அல்லது இறையச்சத்தின் வெளிப்பாடாகும்.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">இரண்டாவது பாடம்: 'தபய்யுன்' – செய்திகளைத் தெளிவுபடுத்திக் கொள்ளுதல்</h3>
+                            <p style="margin-bottom: 25px;">தவறான செய்திகள் ஒரு சமூகத்தின் அஸ்திவாரத்தையே அசைக்கக் கூடியவை. ஒரு பாவி (ஃபாஸிக்) ஒரு செய்தியைக் கொண்டு வரும்போது அதை உறுதிப்படுத்துவது கட்டாயம். ஆனால், இந்த சூரா <strong>'தபய்யுன்' (Tabayyun)</strong> என்ற இன்னும் ஆழமான கருத்தாக்கத்தைப் பேசுகிறது. 'தபய்யுன்' என்பது வெறும் தகவலைச் சரிபார்ப்பது மட்டுமல்ல; அந்தச் செய்தியின் பின்னணி, அதன் சாத்தியக்கூறுகள் மற்றும் சூழலைத் தெளிவுபடுத்திக் கொள்வதாகும்.</p>
+
+                            <p style="margin-bottom: 35px;">ஒரு நம்பிக்கைக்குரிய மனிதர் ஒரு செய்தியைக் கொண்டு வந்தாலும் கூட, அதன் விளைவுகள் தீவிரமானதாக இருக்கும் பட்சத்தில் 'தபய்யுன்' அவசியம். செய்தியைத் தெளிவுபடுத்திக் கொள்ளாமல் உணர்ச்சிவசப்பட்டு எடுக்கும் முடிவுகள், பின்னர் ஒரு நிரபராதியைத் தண்டிக்கவோ அல்லது சமூகச் சிதைவிற்கோ வழிவகுக்கும். இது பின்னர் ஒரு மனிதனுக்குத் தீராத கவலையையும் 'குற்ற உணர்வையும்' (Guilt) ஏற்படுத்தும். இன்றைய 'போலிச் செய்திகள்' (Fake News) மலிந்துவிட்ட டிஜிட்டல் உலகில், ஒரு தகவலைப் பகிரும் முன் அதைத் தெளிவுபடுத்திக் கொள்ளும் இந்தப் பண்பு, ஒரு சமூகப் பாதுகாப்பு அரணாகத் திகழ்கிறது.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">மூன்றாவது பாடம்: சமூக நச்சுகளின் சங்கிலித்தொடர்</h3>
+                            <p style="margin-bottom: 25px;">முஸ்லிம்களுக்கு இடையிலான உறவைச் சீர்குலைக்கும் சில செயல்களை இந்த சூரா மிகக் கடுமையான மொழியில் கண்டிக்கிறது. இது வெறும் தனித்தனிப் பழக்கங்கள் அல்ல, மாறாக ஒன்று இன்னொன்றிற்கு வழிவகுக்கும் ஒரு நச்சுச் சங்கிலி:</p>
+                            
+                            <ul class="unit-list" style="margin-bottom: 25px; padding-left: 20px;">
+                                <li><strong>பரிகாசம் மற்றும் பட்டப்பெயர்:</strong> ஒருவரை மற்றவர்கள் முன்னிலையில் கிண்டல் செய்வதும் இழிவான பட்டப்பெயரிட்டு அழைப்பதும் உள்ளங்களில் வெறுப்பை விதைக்கின்றன.</li>
+                                <li><strong>வீண் சந்தேகம்:</strong> இதுதான் வீழ்ச்சியின் ஆரம்பம். ஆதாரமற்ற சந்தேகம் ஒரு மனிதனை அடுத்த நிலைக்குத் தள்ளுகிறது.</li>
+                                <li><strong>உளவு பார்த்தல்:</strong> சந்தேகம் கொண்ட ஒருவன், மற்றவரின் குறைகளைத் தேடி உளவு பார்க்கத் தொடங்குகிறான்.</li>
+                                <li><strong>புறம் பேசுதல்:</strong> உளவு பார்த்துக் கண்டுபிடித்த குறைகளை மற்றவர்களிடம் பரப்புவதே புறம் பேசுதல்.</li>
+                            </ul>
+                            
+                            <p style="margin-bottom: 25px;">புறம் பேசுவதை குர்ஆன் மிக அருவருப்பான ஒரு செயலோடு ஒப்பிடுகிறது:<br>
+                            <em>"உங்களில் எவராவது தனது இறந்த சகோதரனின் மாமிசத்தைச் சாப்பிடுவதற்கு விரும்புவாரா?"</em></p>
+
+                            <p style="margin-bottom: 35px;">இந்த உவமையின் மூலம், ஒருவரின் மறைவில் அவரது கண்ணியத்தைச் சிதைப்பது எவ்வளவு கொடியது என்பதை அல்லாஹ் உணர்த்துகிறான். இந்த 'சமூக நச்சுகளை' அகற்றுவதே ஒரு ஆரோக்கியமான உறவிற்கு அடிப்படை.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">நான்காவது பாடம்: உலகளாவிய மனிதச் சகோதரத்துவம்</h3>
+                            <p style="margin-bottom: 25px;">இந்த சூரா மனிதப் படைப்பின் நோக்கத்தைத் தெளிவுபடுத்துகிறது. மனிதர்கள் அனைவரும் ஒரே ஆண் (ஆதம்) மற்றும் பெண்ணிலிருந்தே (ஹவ்வா) படைக்கப்பட்டவர்கள். அவர்களுக்குள் இருக்கும் இனம், குலம், கோத்திரம் போன்ற பிரிவுகள் ஒருவரை ஒருவர் அடையாளம் கண்டு கொள்வதற்கும் (Recognition), புரிந்து கொள்வதற்குமே அன்றி, ஒருவருக்கொருவர் பெருமை அடித்துக் கொள்ளவோ அல்லது தாழ்வாக எண்ணவோ அல்ல.</p>
+
+                            <p style="margin-bottom: 35px;">நிறம் மற்றும் குலத்தைக் கடந்து, மனிதநேயமே அடிப்படை என்பதை இது வலியுறுத்துகிறது. உண்மையான மேன்மை என்பது ஒருவரின் குலத்திலோ மொழியிலோ இல்லை, அது ஒருவரின் இறையச்சத்திலும் (Taqwa) நற்பண்புகளிலுமே தங்கியுள்ளது.</p>
+
+                            <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">ஐந்தாவது பாடம்: வெறும் சொல்லல்ல ஈமான்</h3>
+                            <p style="margin-bottom: 25px;">ஈமான் (நம்பிக்கை) என்பது வெறும் நாவினால் சொல்லப்படும் 'இஸ்லாம்' என்ற சொல்லுக்கு அப்பாற்பட்டது. ஹிஜ்ரி ஒன்பதாம் ஆண்டு, 'பனு அஸத்' (Banu Asad) என்ற கோத்திரத்தினர் நபி (ஸல்) அவர்களிடம் வந்து, "நாங்கள் உங்களுடன் போரிடாமல் சுலபமாக இஸ்லாத்தை ஏற்றுக்கொண்டோம், இது நாங்கள் உங்களுக்குச் செய்த உபகாரம்" என்ற தொனியில் பெருமையாகப் பேசினர்.</p>
+
+                            <p style="margin-bottom: 25px;">அவர்களின் இந்த நாவினால் சொல்லப்பட்ட 'ஈமானை' அல்லாஹ் திருத்துகிறான். "நீங்கள் ஈமான் கொண்டுவிட்டதாகச் சொல்லாதீர்கள், கட்டுப்பட்டோம் (இஸ்லாத்தை ஏற்றோம்) என்று சொல்லுங்கள்" என குர்ஆன் தெளிவுபடுத்துகிறது. ஏனெனில் ஈமான் என்பது உள்ளத்தில் நுழைய வேண்டிய ஒன்று. உண்மையான ஈமானின் அடையாளங்கள்:</p>
+
+                            <ul class="unit-list" style="margin-bottom: 25px; padding-left: 20px;">
+                                <li>அல்லாஹ்வையும் அவனது தூதரையும் முழுமையாக நம்பி, எவ்விதச் சந்தேகமும் (Shak) கொள்ளாமல் இருப்பது.</li>
+                                <li>தங்களின் உயிர் மற்றும் பொருளால் இறைவழியில் அர்ப்பணிப்புடன் பாடுபடுவது.</li>
+                            </ul>
+
+                            <p style="margin-bottom: 35px;">நாவினால் சொல்லும் 'இஸ்லாம்' என்பது உள்ளத்தின் ஆழத்திலிருந்து வரும் செயல்பாடாக மாறும்போதுதான் அல்லாஹ்வுடனான உறவு உண்மையானதாக அமையும்.</p>
+
+                            <div style="background: rgba(241, 180, 52, 0.05); border: 1px solid rgba(241, 180, 52, 0.2); padding: 30px; border-radius: 15px; margin: 40px 0;">
+                                <h4 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.2rem; text-align: center;">மாற்றத்திற்கான அறைகூவல்</h4>
+                                <p style="margin-bottom: 20px;">சூரத்துல் ஹுஜுராத் என்பது ஒரு நாகரீகமான சமூகத்தை உருவாக்குவதற்கான அடிப்படைப் பாடமாகும். நமது நாவால் ஏற்படும் சிறிய தவறுகள் கூட நமது வாழ்நாள் நன்மைகளையே அழித்துவிடும் அபாயம் கொண்டவை. செய்திகளைத் தெளிவுபடுத்துவதும் (Tabayyun), பிறரின் கண்ணியத்தைப் பேணுவதும், 'ஈமான்' எனும் அக மாற்றத்தை நோக்கிப் பயணிப்பதும் இன்றைய காலத்தின் கட்டாயத் தேவைகளாகும்.</p>
+                                
+                                <p style="text-align: center; font-weight: 500; font-size: 1.15rem; color: #fff; margin-bottom: 0;">நமது நாவைக் கட்டுப்படுத்துவதன் மூலம் நமது குடும்ப மற்றும் சமூகப் பிரச்சனைகளில் பாதியைத் தீர்க்க முடியும் என்றால், அதைச் செய்ய நாம் ஏன் இன்னும் தயங்க வேண்டும்? <strong>நம் பேச்சைச் சீரமைப்போம்; அது நம் வாழ்வையே சீரமைக்கும்!</strong></p>
+                            </div>
+                            </div>
+                            <button class="btn btn-outline" onclick="toggleReadMore(this)" style="margin-top: 20px; padding: 10px 25px; font-size: 0.9rem;">Read More</button>
+                        </div>
+                    </div>
+
                     <div class="glass-panel" style="padding: 40px; background: rgba(0,0,0,0.5);">
                         <h2 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.8rem; line-height: 1.4;">சமூக அழிவுக்கான காரணங்களும் ஈமானிய நடத்தையும்</h2>
                         <div style="display: flex; gap: 15px; margin-bottom: 30px; font-size: 0.95rem; color: #cbd5e1; border-left: 3px solid var(--brand-yellow); padding-left: 15px;">
@@ -294,7 +479,8 @@
                             
                             <p style="margin-bottom: 25px;">ஒரு சமூகம் ஏன் நிலைகுலைந்து போகிறது? அமைதி எதனால் பறிபோகிறது? இக்கேள்விகளுக்கான விடைகளைத் தேடி நாம் பல்வேறு நவீன சமூகவியல் கோட்பாடுகளை ஆராயக்கூடும். ஆனால், 1400 ஆண்டுகளுக்கு முன்பே அண்ணல் நபி (ஸல்) அவர்கள் வழங்கிய ஹதீஸ்கள், வெறும் ஆன்மீக உபதேசங்கள் மட்டுமல்ல; அவை ஒரு சமூகம் நிலைபெறுவதற்கான மிகத் துல்லியமான <strong>'சமூகவியல் வரைபடம்' (Sociological Map)</strong> ஆகும்.</p>
                             
-                            <p style="margin-bottom: 35px;">நபிமொழிகள் என்பவை ஆங்காங்கே சிதறிக் கிடக்கும் உதிரித் தகவல்கள் அல்ல. ஒரு உலக வரைபடத்தைத் துண்டு துண்டாகக் கிழித்து ஒருவரிடம் கொடுத்தால், அந்த வரைபடத்தைப் பற்றி ஏற்கனவே ஆழமான அறிவுள்ள ஒருவரால் மட்டுமே அந்தப் பாகங்களைச் சரியாக இணைத்து முழுமையாக்க முடியும். நபி (ஸல்) அவர்கள் அந்தந்தச் சூழல், சந்தர்ப்பம் மற்றும் மனிதர்களின் பலவீனங்களைக் கவனித்துத் தனித்தனியாக வழங்கிய வழிகாட்டல்களை, ஒரு இஸ்லாமியச் சமூகவியல் அறிஞரே <em>'தலைப்பு ரீதியான ஹதீஸ் விளக்கக் கோட்பாடு' (Thematic Analysis of Hadith)</em> மூலம் ஒருங்கிணைத்து, ஒரு முழுமையான சித்திரத்தை நமக்கு வழங்க முடியும். அவ்வாறு ஒருங்கிணைக்கும்போது, சமுதாய வீழ்ச்சிக்கான உண்மைகளை ஹதீஸ்கள் நமக்குத் தெளிவுபடுத்துகின்றன.</p>
+                            <div class="content-full" style="display: none;">
+                                <p style="margin-bottom: 35px;">நபிமொழிகள் என்பவை ஆங்காங்கே சிதறிக் கிடக்கும் உதிரித் தகவல்கள் அல்ல. ஒரு உலக வரைபடத்தைத் துண்டு துண்டாகக் கிழித்து ஒருவரிடம் கொடுத்தால், அந்த வரைபடத்தைப் பற்றி ஏற்கனவே ஆழமான அறிவுள்ள ஒருவரால் மட்டுமே அந்தப் பாகங்களைச் சரியாக இணைத்து முழுமையாக்க முடியும். நபி (ஸல்) அவர்கள் அந்தந்தச் சூழல், சந்தர்ப்பம் மற்றும் மனிதர்களின் பலவீனங்களைக் கவனித்துத் தனித்தனியாக வழங்கிய வழிகாட்டல்களை, ஒரு இஸ்லாமியச் சமூகவியல் அறிஞரே <em>'தலைப்பு ரீதியான ஹதீஸ் விளக்கக் கோட்பாடு' (Thematic Analysis of Hadith)</em> மூலம் ஒருங்கிணைத்து, ஒரு முழுமையான சித்திரத்தை நமக்கு வழங்க முடியும். அவ்வாறு ஒருங்கிணைக்கும்போது, சமுதாய வீழ்ச்சிக்கான உண்மைகளை ஹதீஸ்கள் நமக்குத் தெளிவுபடுத்துகின்றன.</p>
 
                             <h3 style="color: var(--brand-yellow); font-size: 1.4rem; margin-bottom: 20px;">1. விளிம்புநிலை மக்களின் பலமே சமூகத்தின் பலம்</h3>
                             <p style="margin-bottom: 25px;">ஒரு சமூகத்தின் ஆரோக்கியம் என்பது அந்தச் சமூகத்தின் உயர்மட்டத்தில் இருப்பவர்களின் செல்வத்தை வைத்துத் தீர்மானிக்கப்படுவதில்லை; மாறாக, அங்கிருக்கும் <strong>விளிம்புநிலை மக்கள் (The Marginalized)</strong> எப்படி நடத்தப்படுகிறார்கள் என்பதை வைத்தே தீர்மானிக்கப்படுகிறது.</p>
@@ -335,6 +521,8 @@
                                 </ul>
                                 <p style="text-align: center; font-weight: 500; font-size: 1.15rem; color: #fff;">"நாம் வாழும் சமூகம் வீழ்ச்சியிலிருந்து தப்ப வேண்டுமானால், நம்மிடம் உள்ள பலவீனர்களை நாம் எப்படி நடத்துகிறோம்?" விடை நம்மிடமே உள்ளது. நமது சமூக நடத்தையை ஈமானிய அடிப்படையில் சீரமைப்பதே சமூக மீட்சிக்கான முதல் படி.</p>
                             </div>
+                            </div>
+                            <button class="btn btn-outline" onclick="toggleReadMore(this)" style="margin-top: 20px; padding: 10px 25px; font-size: 0.9rem;">Read More</button>
 
                             <div style="text-align: center; margin-top: 40px;">
                                 <a href="https://onlineformsins-art.github.io/mrcsbooks/" target="_blank" class="btn" style="padding: 15px 40px; font-size: 1.1rem; display: inline-block;">
@@ -363,7 +551,8 @@
                                 </h3>
                                 <p style="color: #fff; font-size: 1.05rem; margin-bottom: 25px;">இஸ்லாமிய வாரிசுரிமைச் சட்டத்தை முறையாகவும் நடைமுறை அடிப்படையிலும் கற்றுக்கொள்ள சிறந்த வாய்ப்பு!</p>
                                 
-                                <h4 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.1rem;">📚 இந்த கற்கைநெறி மூலம்,</h4>
+                                <div class="content-full" style="display: none;">
+                                    <h4 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.1rem;">📚 இந்த கற்கைநெறி மூலம்,</h4>
                                 <ul class="unit-list" style="margin-bottom: 25px;">
                                     <li>இஸ்லாமிய வாரிசுரிமைச் சட்டத்தின் அடிப்படைகள்</li>
                                     <li>வாரிசு பங்கீட்டின் நடைமுறை விளக்கம்</li>
@@ -396,6 +585,8 @@
                                         📲 பதிவு செய்ய
                                     </a>
                                 </div>
+                                </div>
+                                <button class="btn btn-outline" onclick="toggleReadMore(this)" style="margin-top: 20px; padding: 10px 25px; font-size: 0.9rem;">Read More</button>
                             </div>
                         </div>
 
@@ -414,7 +605,8 @@
                                 </h3>
                                 <p style="color: #fff; font-size: 1.05rem; margin-bottom: 25px;">இஸ்லாமிய வாழ்வியலின் மூலாதாரக் கலைகளை கற்றுணர உங்களை அன்புடன் அழைக்கின்றோம்.</p>
                                 
-                                <h4 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.1rem;">📚 கற்பிக்கப்படும் பாடங்கள்:</h4>
+                                <div class="content-full" style="display: none;">
+                                    <h4 style="color: var(--brand-yellow); margin-bottom: 15px; font-size: 1.1rem;">📚 கற்பிக்கப்படும் பாடங்கள்:</h4>
                                 <ul class="unit-list" style="margin-bottom: 25px;">
                                     <li><strong>✨ பிக்ஹ் (Fiqh):</strong> அன்றாட வாழ்விற்கான நடைமுறை இஸ்லாமிய சட்டங்கள் பற்றிய தெளிவு.</li>
                                     <li><strong>✨ தஸவ்வுப் (Thasawwuf):</strong> உள்ளத்தைத் தூய்மைப்படுத்தலும், வணக்க வழிபாடுகளை உயிர்ப்புடன் நிறைவேற்றலும்.</li>
@@ -437,6 +629,8 @@
                                         📲 WhatsApp குழுவில் இணைய
                                     </a>
                                 </div>
+                                </div>
+                                <button class="btn btn-outline" onclick="toggleReadMore(this)" style="margin-top: 20px; padding: 10px 25px; font-size: 0.9rem;">Read More</button>
                             </div>
                         </div>
 
@@ -521,6 +715,78 @@
                         });
                     </script>
                 </div>
+                
+                <div id="tab-radio" class="tab-pane" style="padding: 40px; display: none;">
+                    <div style="text-align: center; margin-bottom: 50px;">
+                        <h3 style="color: var(--brand-yellow); font-size: 2.2rem; margin-bottom: 15px;">Live <span class="text-accent">Radio Stations</span></h3>
+                        <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Experience our 24/7 continuous Islamic broadcasts. Choose a station below to start listening live.</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+                        
+                        <!-- Thafseer FM -->
+                        <div class="glass-panel tilt-card levitate-slow" style="padding: 40px 30px; background: rgba(0,0,0,0.6); text-align: center; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid rgba(241, 180, 52, 0.2);">
+                            <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(241, 180, 52, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+                            <div style="width: 90px; height: 90px; margin: 0 auto 25px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-yellow), #d4981d); display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 30px rgba(241, 180, 52, 0.4); position: relative; z-index: 2;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2A2F35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                            </div>
+                            <h4 style="color: #fff; font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; position: relative; z-index: 2;">Thafseer FM</h4>
+                            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 30px; position: relative; z-index: 2; min-height: 40px;">In-depth Quranic Exegesis and Explanations.</p>
+                            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);">
+                                <audio controls style="width: 100%; height: 45px; outline: none; border-radius: 50px;">
+                                    <source src="https://stream.zeno.fm/kxtdf1ncazzuv" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+
+                        <!-- Seerah FM -->
+                        <div class="glass-panel tilt-card levitate-slow" style="padding: 40px 30px; background: rgba(0,0,0,0.6); text-align: center; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); animation-delay: 0.2s;">
+                            <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%); border-radius: 50%;"></div>
+                            <div style="width: 90px; height: 90px; margin: 0 auto 25px; border-radius: 50%; background: linear-gradient(135deg, #2A2F35, #1a1d21); border: 2px solid var(--brand-yellow); display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,0.3); position: relative; z-index: 2;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--brand-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                            </div>
+                            <h4 style="color: #fff; font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; position: relative; z-index: 2;">Seerah FM</h4>
+                            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 30px; position: relative; z-index: 2; min-height: 40px;">Life, History and Teachings of the Prophet (ﷺ).</p>
+                            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);">
+                                <audio controls style="width: 100%; height: 45px; outline: none; border-radius: 50px;">
+                                    <source src="https://stream.zeno.fm/0baxuvp4nzzuv" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+
+                        <!-- Sinhala Islam FM -->
+                        <div class="glass-panel tilt-card levitate-slow" style="padding: 40px 30px; background: rgba(0,0,0,0.6); text-align: center; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); animation-delay: 0.4s;">
+                            <div style="position: absolute; bottom: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%); border-radius: 50%;"></div>
+                            <div style="width: 90px; height: 90px; margin: 0 auto 25px; border-radius: 50%; background: linear-gradient(135deg, #2A2F35, #1a1d21); border: 2px solid var(--brand-yellow); display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,0.3); position: relative; z-index: 2;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--brand-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                            </div>
+                            <h4 style="color: #fff; font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; position: relative; z-index: 2;">Sinhala Islam FM</h4>
+                            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 30px; position: relative; z-index: 2; min-height: 40px;">Islamic Programs and Lectures in Sinhala.</p>
+                            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);">
+                                <audio controls style="width: 100%; height: 45px; outline: none; border-radius: 50px;">
+                                    <source src="https://stream.zeno.fm/pzfgvqnec2zuv" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <script>
+                        // Ensure only one audio plays at a time
+                        document.addEventListener('play', function(e){
+                            var audios = document.getElementsByTagName('audio');
+                            for(var i = 0, len = audios.length; i < len;i++){
+                                if(audios[i] != e.target){
+                                    audios[i].pause();
+                                }
+                            }
+                        }, true);
+                    </script>
+                </div>
+
                 </div>
             </div>
         </div>
@@ -1072,6 +1338,8 @@
                     inner.style.transition = 'transform 0.1s ease-out';
                 });
             });
+        
+            startCarousel();
         });
 
         function openTab(evt, tabName) {
@@ -1086,6 +1354,67 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+        // Carousel Logic
+        let currentSlide = 0;
+        let slideInterval;
+        
+        function goToSlide(index) {
+            const track = document.getElementById('carousel-track');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const slides = document.querySelectorAll('.carousel-slide');
+            
+            if(!track || dots.length === 0 || slides.length === 0) return;
+            
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            dots[currentSlide].classList.add('active');
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            if(slides.length === 0) return;
+            goToSlide((currentSlide + 1) % slides.length);
+        }
+        
+        function startCarousel() {
+            if(document.getElementById('carousel-track')) {
+                slideInterval = setInterval(nextSlide, 6000);
+            }
+        }
+        
+        // Share functionality
+        function sharePost(postId) {
+            const url = window.location.origin + window.location.pathname + "#" + postId;
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('share-toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert("Share link: " + url);
+            });
+        }
+
+        function toggleReadMore(btn) {
+            const container = btn.parentElement;
+            const fullContent = container.querySelector('.content-full');
+            if (fullContent.style.display === 'none') {
+                fullContent.style.display = 'block';
+                btn.innerHTML = 'Read Less';
+            } else {
+                fullContent.style.display = 'none';
+                btn.innerHTML = 'Read More';
+            }
+        }
     </script>
+    <script src="inheritance-assistant.js"></script>
 </body>
 </html>
