@@ -209,6 +209,12 @@
     font-family:'Playfair Display',serif; font-size:1rem; font-weight:700;
     padding:5px 13px; border-radius:20px; border:1px solid rgba(201,168,76,0.3);
   }
+  .badge-oos {
+    position:absolute; top:12px; right:12px; z-index:5;
+    background:linear-gradient(135deg, #777, #444);
+    color:white; font-size:9px; font-weight:700; letter-spacing:1.5px;
+    text-transform:uppercase; padding:5px 11px; border-radius:20px;
+  }
 
   .book-body { padding:18px 20px 8px; flex:1; }
   .book-id { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; font-weight:600; }
@@ -227,6 +233,8 @@
   }
   .add-btn:hover { background:var(--green-mid); transform:scale(1.02); }
   .add-btn.added { background:linear-gradient(135deg, var(--gold), #b8860b); color:var(--green-deep); }
+  .add-btn.oos { background: #9a8e82; cursor: not-allowed; opacity: 0.8; }
+  .add-btn.oos:hover { transform: none; background: #9a8e82; }
 
   /* ── LIGHTBOX ── */
   .lightbox {
@@ -374,12 +382,12 @@
     <div class="lang-tab active" onclick="selectLang('tamil',this)">
       <div class="lang-tab-icon">🇱🇰</div>
       <div class="lang-tab-name">தமிழ் Books</div>
-      <div class="lang-tab-count">Tamil · 8 Books</div>
+      <div class="lang-tab-count">12 Books</div>
     </div>
     <div class="lang-tab" onclick="selectLang('english',this)">
       <div class="lang-tab-icon">🇬🇧</div>
       <div class="lang-tab-name">English Books</div>
-      <div class="lang-tab-count">English · 5 Books</div>
+      <div class="lang-tab-count">6 Books</div>
     </div>
     <div class="lang-tab" onclick="selectLang('sinhala',this)">
       <div class="lang-tab-icon">🕌</div>
@@ -435,7 +443,7 @@
 </footer>
 
 <!-- covers.js loaded FIRST so COVERS is available when main.js runs -->
-<script src="covers.js"></script>
+<script src="covers12.js"></script>
 <script>
 /* ═══════════ BOOK DATA ═══════════ */
 const books = {
@@ -445,16 +453,21 @@ const books = {
     {id:"B03",lang:"Tamil",isNew:false,price:400,title:"அல்குர்ஆன் வன்முறையைத் தூண்டுகிறதா?",titleEn:"Does Al-Qur'an Encourage Violence? (Tamil)",contents:["போர்: ஒர் அல்குர்ஆனியப் பார்வை","பிழையாகப் புரிந்துகொள்ளப்பட்ட இறை வசனங்கள்","அல்குர்ஆனில் போரைத் தூண்டும் வசனங்கள் காணப்படுவதற்கான காரணங்கள்"]},
     {id:"B04",lang:"Tamil",isNew:false,price:200,title:"மதத்தைத் துறத்தலும் மத நிந்தனையும் – ஒரு பார்வை",titleEn:"Apostasy & Blasphemy – A Review (Tamil)",contents:["ரித்தத் – மதத்தைத் துறத்தல் ஒரு விளக்கம்","மத நிந்தனை"]},
     {id:"B05",lang:"Tamil",isNew:false,price:400,title:"இஸ்லாமிய சட்டப் பின்னணியில் குடும்பப் பொருளாதாரப் பராமரிப்பு",titleEn:"Family Financial Support – Islamic Perspective (Tamil)",contents:["இரத்த உறவின் முக்கியத்துவம்","இரத்த உறவும் பொருளாதாரப் பராமரிப்பும்","செலவழித்தவுக்கான வழிகாட்டல்கள்","குடும்பப் பராமரிப்புக்கான மாதிரித் திட்டம்"]},
-    {id:"B06",lang:"Tamil",isNew:false,price:400,title:"ஸூரா திலாக் விளக்கவுரை",titleEn:"Surah At-Talaq Commentary (Tamil)",contents:["ஸூரா அத்தலாக்: பொது அறிமுகம்","சட்டங்களும் வழிகாட்டல்களும்","இறை சட்டங்களைப் பின்பற்றலின் அவசியம்"]},
+    {id:"B06",lang:"Tamil",isNew:false,price:400,title:"ஸூரா தலாக் விளக்கவுரை",titleEn:"Surah At-Talaq Commentary (Tamil)",contents:["ஸூரா அத்தலாக்: பொது அறிமுகம்","சட்டங்களும் வழிகாட்டல்களும்","இறை சட்டங்களைப் பின்பற்றலின் அவசியம்"]},
     {id:"B07",lang:"Tamil",isNew:false,price:400,title:"இஸ்லாமிய ஷரீஆ – யதார்த்தமும் பிரயோகமும்",titleEn:"Islamic Sharia – Reality & Application (Tamil)",contents:["ஷரீஆ – அர்த்தமும் வரைவிலக்கணமும்","அல்குர்ஆன் ஒரு சட்ட நூலா?","மனித நலன்களை மையப்படுத்தும் ஷரீஆவின் உயர் இலக்குகள்","இஸ்லாமிய ஷரீஆவும் இலங்கை முஸ்லிம் சமூகமும்"]},
     {id:"B13",lang:"Tamil",isNew:true,price:200,title:"ஸகாத் – பிரயோகம் சார் பத்வாக்கள்",titleEn:"Zakat – Practical Fatwas (Tamil)",contents:["கேள்வி பதில்"]},
+    {id:"B15",lang:"Tamil",isNew:true,price:400,title:"இஸ்லாமிய வாரிசுரிமைச் சட்டம் - விளக்கமும் இலங்கையில் அதன் பிரயோகமும்",titleEn:"Islamic Law of Inheritance",contents:["இஸ்லாமிய வாரிசுரிமைச் சட்டம்: ஓர் அறிமுகம்","வாரிசுகளின் வகைகள் மற்றும் பங்குகளின் ஒதுக்கீடு","கள ஆய்விலிருந்தான ஆய்வு நிகழ்வுகள்","இலங்கை முஸ்லிம் தனியாள் சட்டத்தின் கீழ் வாரிசுரிமை","மரணசாசன (வஸிய்யத்) நடவடிக்கைகள்"]},
+    {id:"B16",lang:"Tamil",isNew:false,isOutOfStock:true,price:350,title:"ஸகாத்தின் முக்கியத்துவமும் இலக்குகளும் (மாதிரி குத்பாக்கள்)",titleEn:"Importance and Objectives of Zakat",contents:[]},
+    {id:"B17",lang:"Tamil",isNew:true,isFree:true,price:"Free Online Edition",title:"உழ்ஹிய்யாவும் சிறுபான்மை சமூகத்தில் அதன் நடைமுறையும்",titleEn:"Udhiyah and Its Practice in the Minority Community",contents:[]},
+    {id:"B19",lang:"Tamil",isNew:true,isFree:true,price:"Free Online Edition",title:"முஸ்லிம் தனியார் சட்டம் -சில அவதானங்கள்-",titleEn:"Muslim Personal Law - Some Observations",contents:[]},
   ],
   english: [
     {id:"B10",lang:"English",isNew:false,price:400,title:"Financial Support within the Family – An Islamic Perspective",titleEn:"Financial Support within the Family",contents:["Importance of maintaining blood relationships","Blood relationship and financial support","Blood relatives to be financially supported","Guidelines for financial support","Social benefits of financial support","A Model plan for family financial support"]},
     {id:"B11",lang:"English",isNew:false,price:400,title:"Humanitarian Envoy Muhammed ﷺ",titleEn:"Humanitarian Envoy Muhammad",contents:["The Noble life of the Prophet","Justice is the gist of Prophet's constitution","The Prophet's worship is solving the problems of the people"]},
     {id:"B12",lang:"English",isNew:false,price:400,title:"Does Al-Qur'an Encourage Violence?",titleEn:"Does Al-Qur'an Encourage Violence?",contents:["War: A Qur'anic Approach","Misunderstood Divine Verses","Why does the Qur'an Contain Verses that Encourage War?"]},
     {id:"B14",lang:"English",isNew:false,price:750,title:"Zakat – A Practical Guide",titleEn:"Zakat – A Practical Guide",contents:["General conditions of Zakatable wealth","Sources of Zakatable wealth","Zakat distribution","Institutionalization of Zakat"]},
-    {id:"B15",lang:"English",isNew:true,price:400,title:"Islamic Law of Inheritance – Explained & Applied in Sri Lanka",titleEn:"Islamic Law of Inheritance",contents:["Islamic Inheritance Law introduction","Types of heirs and share allocation","Case studies from field research","Inheritance under Sri Lanka Muslim Personal Law","Testamentary Actions"]},
+    {id:"B18",lang:"English",isNew:true,isFree:true,price:"Free Online Edition",title:"Udhiyya and its implementation in a minority - A new perspective",titleEn:"Udhiyya and its implementation in a minority - A new perspective",contents:[]},
+    {id:"B20",lang:"English",isNew:true,isFree:true,price:"Free Online Edition",title:"Muslim Personal Law - Some Observations",titleEn:"Muslim Personal Law - Some Observations",contents:[]},
   ],
   sinhala: [
     {id:"B08",lang:"Sinhala",isNew:false,price:400,title:"අල්-කුර්ආනය ප්‍රචණ්ඩත්වයට පොළොඹ වන්නේද?",titleEn:"Does Al-Quran Encourage Violence? (Sinhala)",contents:["යුද්ධය: අල් - කුර්ආන් දෘෂ්ටි කෝණයෙන්","වැරදි ලෙස වටහා ගන්නා ලද අල්-කුර්ආන් පාඨ","යුද්ධ සඳහා පොළොඹවන පාඨ නිමිත්ත..."]},
@@ -492,7 +505,7 @@ function renderBooks(lang) {
     <div class="book-card" style="transition-delay:${i*65}ms" data-id="${b.id}">
       <div class="book-cover" onclick="openLightbox('${b.id}','${b.titleEn.replace(/'/g,"\\'")}')">
         <span class="badge-lang">${b.lang}</span>
-        ${b.isNew ? '<span class="badge-new">🆕 New</span>' : ''}
+        ${b.isOutOfStock ? '<span class="badge-oos">Out of Stock</span>' : (b.isNew ? '<span class="badge-new">🆕 New</span>' : '')}
         <img src="${src}" alt="${b.titleEn}" loading="lazy">
         <span class="cover-zoom-hint">🔍 Click to enlarge</span>
         <span class="price-badge">Rs ${b.price.toLocaleString()}</span>
@@ -503,8 +516,8 @@ function renderBooks(lang) {
         <div class="book-contents"><ul>${b.contents.map(c=>`<li>${c}</li>`).join('')}</ul></div>
       </div>
       <div class="book-footer">
-        <button class="add-btn ${inCart?'added':''}" onclick="addToCart('${b.id}','${lang}',this)">
-          ${inCart ? '✓ Added to Cart' : '🛒 Add to Cart'}
+        <button class="add-btn ${inCart?'added':''} ${b.isOutOfStock?'oos':''}" onclick="${b.isOutOfStock ? "alert('This book is currently out of stock.')" : `addToCart('${b.id}','${lang}',this)`}">
+          ${b.isOutOfStock ? 'Out of Stock' : (inCart ? '✓ Added to Cart' : '🛒 Add to Cart')}
         </button>
       </div>
     </div>`;

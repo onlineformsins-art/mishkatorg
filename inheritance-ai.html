@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mishkath Fara'id Inheritance AI</title>
+    <link rel="icon" type="image/png" href="media__1777652469688.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-grey-dark: #2A2F35;
+            --brand-yellow: #F1B434;
+            --brand-light: #F8F9FA;
+            --bg-deep-space: #0a0b0d;
+            --bg-atmosphere: #15181c;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(42, 47, 53, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --glass-blur: blur(20px);
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background-color: var(--bg-deep-space); color: var(--text-main); line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        ::selection { background: var(--brand-yellow); color: var(--bg-deep-space); }
+
+        .atmosphere { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 50% 50%, var(--bg-atmosphere) 0%, var(--bg-deep-space) 100%); overflow: hidden; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: drift infinite alternate ease-in-out; }
+        .orb-primary { width: 50vw; height: 50vw; background: var(--brand-yellow); top: -20vh; left: -10vw; animation-duration: 25s; opacity: 0.15; }
+        .orb-secondary { width: 40vw; height: 40vw; background: var(--brand-grey-dark); bottom: -10vh; right: -10vw; animation-duration: 30s; animation-delay: -5s; opacity: 0.8; }
+
+        @keyframes drift { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -50px) scale(1.05); } 100% { transform: translate(-20px, 20px) scale(0.95); } }
+
+        h1, h2, h3 { font-family: var(--font-heading); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); background: linear-gradient(135deg, #ffffff 0%, var(--text-muted) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; text-align: center; }
+        .text-accent { color: var(--brand-yellow); text-shadow: 0 0 30px rgba(241, 180, 52, 0.3); }
+
+        .container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 5vw; }
+        
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 5vw; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(10, 11, 13, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { display: flex; align-items: center; gap: 15px; text-decoration: none; font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; color: #fff; letter-spacing: 0.05em; }
+        .logo-mark { width: 40px; height: 40px; background: linear-gradient(135deg, var(--brand-grey-dark), #1a1d21); border-radius: 50% 50% 0 50%; transform: rotate(45deg); position: relative; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.1), 0 5px 15px rgba(0,0,0,0.3); }
+        .logo-mark::before { content: ''; width: 12px; height: 12px; background: var(--brand-yellow); border-radius: 50%; transform: rotate(-45deg); box-shadow: 0 0 10px var(--brand-yellow); }
+        .nav-links { display: flex; gap: 30px; flex-wrap: wrap; justify-content: flex-end; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; transition: var(--transition-smooth); position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--brand-yellow); transition: var(--transition-smooth); }
+        .nav-links a:hover { color: var(--brand-yellow); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .calculator-section { padding-top: 140px; padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .calculator-header { text-align: center; max-width: 800px; margin: 0 auto 40px; }
+        .calculator-header p { font-size: 1.2rem; color: var(--text-muted); font-weight: 300; margin-top: 15px; }
+
+        .glass-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 24px; padding: 10px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; height: 75vh; }
+        
+        .iframe-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; flex-grow: 1; position: relative; background: #0e1117; }
+        .iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .calculator-section { padding-top: 100px; }
+            .glass-panel { height: 80vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="atmosphere">
+        <div class="orb orb-primary"></div>
+        <div class="orb orb-secondary"></div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-mark"></div>
+            <span>MISHKATH</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html#home">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="inheritance-ai.html" style="color: var(--brand-yellow); font-weight: 600;">Inheritance AI</a>
+            <a href="books.html" target="_blank" style="color: var(--brand-yellow);">Books & Publications</a>
+        </div>
+    </nav>
+
+    <!-- Main Calculator Content Section -->
+    <section class="calculator-section container">
+        <div class="calculator-header">
+            <h1>Fara'id <span class="text-accent">Inheritance AI</span></h1>
+            <p>A unified, interactive mathematical engine for calculating Islamic inheritance shares (Fara'id) and searching legal rules strictly based on the Mishkath Research Institute's handbook.</p>
+        </div>
+
+        <div class="glass-panel">
+            <div class="iframe-container">
+                <!-- Embedded Streamlit Application Link with ?embed=true for clean UI -->
+                <iframe src="https://inherit-vquqjrxrjzpxga9gsmswjn.streamlit.app/?embed=true" title="Fara'id Inheritance AI App"></iframe>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
